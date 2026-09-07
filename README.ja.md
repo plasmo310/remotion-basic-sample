@@ -59,8 +59,8 @@ remotion-basic-sample/
 │  │  ├─ SimpleBackground.tsx       # 背景色 + 中央テキスト
 │  │  └─ TileScrollBackground.tsx   # 水玉タイルの斜めスクロール背景
 │  └─ effects/                      # 動きの計算・ラッパー
-│     ├─ LoopMotionEffect.ts        # サイン波ベースの共通計算（oscillate / bump / spin）
-│     └─ WiggleEffect.tsx           # 揺らしラッパーと跳ねるtransform生成
+│     ├─ BounceEffect.ts            # 跳ねるtransform生成
+│     └─ WiggleEffect.tsx           # 揺らしラッパー
 └─ remotion.config.ts               # レンダリング設定（CLI実行時のみ適用）
 ```
 
@@ -68,4 +68,4 @@ remotion-basic-sample/
 
 - **compositions**: フレームからパラメータを計算し、シーン全体を組み立てる。Sampleごとの「演出」を書く場所。
 - **components**: propsで受け取った見た目を描画するだけ。フレーム依存の演出ロジックは持たせない。
-- **effects**: 「揺らす」「跳ねる」といった動きの計算を再利用可能な形で切り出す。数式は `LoopMotionEffect.ts` に集約し、見た目のパラメータは呼び出し側で指定する。
+- **effects**: 「揺らす」「跳ねる」といった動きの計算を再利用可能な形で切り出す。数式は効果ごとのファイルに閉じ込め、見た目のパラメータは呼び出し側で指定する。

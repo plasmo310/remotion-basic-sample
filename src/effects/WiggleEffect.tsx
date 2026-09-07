@@ -1,5 +1,16 @@
 import { useCurrentFrame, useVideoConfig } from "remotion";
-import { loopMotionEffect } from "./LoopMotionEffect";
+
+/** 0 除算を避けるための最小周期（秒） */
+const MIN_PERIOD_SEC = 0.0001;
+
+/**
+ * 一定周期で -1 〜 1 を往復するサイン波（位相はゼロ始まり）。
+ * ふわふわ浮かせる・ゆっくり傾ける、といったループ演出の土台に使う
+ * @param elapsedSec 経過秒
+ * @param periodSec 1往復にかける秒数
+ */
+const oscillate = (elapsedSec: number, periodSec: number): number =>
+  Math.sin((elapsedSec / Math.max(periodSec, MIN_PERIOD_SEC)) * Math.PI * 2);
 
 /** 揺らし方の上書き。省略した項目は既定値が使われる */
 export type WiggleOptions = {
@@ -60,13 +71,10 @@ export const WiggleEffect = ({
   const { fps } = useVideoConfig();
 
   const elapsedSec = frame / fps;
-  const rotate = loopMotionEffect.oscillate(elapsedSec, rotateSec) * rotateDeg;
-  const offsetX =
-    loopMotionEffect.oscillate(elapsedSec, offsetSec[0]) * offsetPx[0];
-  const offsetY =
-    loopMotionEffect.oscillate(elapsedSec, offsetSec[1]) * offsetPx[1];
-  const scale =
-    1 + loopMotionEffect.oscillate(elapsedSec, scaleSec) * scaleAmount;
+  const rotate = oscillate(elapsedSec, rotateSec) * rotateDeg;
+  const offsetX = oscillate(elapsedSec, offsetSec[0]) * offsetPx[0];
+  const offsetY = oscillate(elapsedSec, offsetSec[1]) * offsetPx[1];
+  const scale = 1 + oscillate(elapsedSec, scaleSec) * scaleAmount;
 
   return (
     <div
@@ -78,38 +86,4 @@ export const WiggleEffect = ({
       {children}
     </div>
   );
-};
-
-/** 跳ね方の上書き。省略した項目は既定値が使われる */
-export type BounceOptions = {
-  /** 持ち上げる量（絵の表示サイズに対する比率）。省略時 0.04 */
-  liftRatio?: number;
-  /** 縦に伸ばす量（比率）。省略時 0.03。伸ばした分だけ横を縮める */
-  stretchRatio?: number;
-};
-
-/**
- * 一度だけ跳ねる変形の transform 文字列を作る。
- * 0 → 1 → 0 の山カーブ本体は loopMotionEffect.bump が返し、
- * ここではそれを「持ち上げ＋伸縮」の transform に組み立てるだけ。
- * @param progress 跳ね始めてからの進み具合（0 で跳ね始め、1 で跳ね終わり）
- * @param sizePx 跳ねる絵の表示サイズ（px）
- * @param options 跳ね方の上書き
- * @param options.liftRatio 持ち上げる量（絵の表示サイズに対する比率）
- * @param options.stretchRatio 縦に伸ばす量（比率）。伸ばした分だけ横を縮める
- */
-export const bounceEffect = (
-  progress: number,
-  sizePx: number,
-  options: BounceOptions = {},
-): string => {
-  const liftRatio = options.liftRatio ?? 0.04;
-  const stretchRatio = options.stretchRatio ?? 0.03;
-
-  // 跳ね終わったあとは bump が 0 を返すので、コマが長く居座っても動きっぱなしにならない
-  const bounce = loopMotionEffect.bump(progress);
-
-  return `translateY(${-bounce * sizePx * liftRatio}px) scale(${
-    1 - bounce * stretchRatio
-  }, ${1 + bounce * stretchRatio})`;
 };

@@ -61,8 +61,8 @@ remotion-basic-sample/
 │  │  ├─ SimpleBackground.tsx       # Background color + centered text
 │  │  └─ TileScrollBackground.tsx   # Diagonally scrolling polka-dot tile background
 │  └─ effects/                      # Motion calculations and wrappers
-│     ├─ LoopMotionEffect.ts        # Shared sine-wave based math (oscillate / bump / spin)
-│     └─ WiggleEffect.tsx           # Wiggle wrapper and bouncing transform generation
+│     ├─ BounceEffect.ts            # Bouncing transform generation
+│     └─ WiggleEffect.tsx           # Wiggle wrapper
 └─ remotion.config.ts               # Rendering settings (applied only when running the CLI)
 ```
 
@@ -70,4 +70,4 @@ remotion-basic-sample/
 
 - **compositions**: Calculate parameters from the frame and assemble the whole scene. This is where the "direction" of each sample is written.
 - **components**: Only render the look received via props. They hold no frame-dependent animation logic.
-- **effects**: Extract motion calculations such as "sway" and "bounce" into reusable pieces. The math is centralized in `LoopMotionEffect.ts`, and visual parameters are specified by the caller.
+- **effects**: Extract motion calculations such as "sway" and "bounce" into reusable pieces. The math is kept inside the file for each effect, and visual parameters are specified by the caller.

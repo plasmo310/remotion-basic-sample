@@ -6,7 +6,8 @@ import {
   useCurrentFrame,
 } from "remotion";
 import { TileScrollBackground } from "../components/TileScrollBackground";
-import { WiggleEffect, bounceEffect } from "../effects/WiggleEffect";
+import { bounceEffect } from "../effects/BounceEffect";
+import { WiggleEffect } from "../effects/WiggleEffect";
 
 type Props = {};
 
