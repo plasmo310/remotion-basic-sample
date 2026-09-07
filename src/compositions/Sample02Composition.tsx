@@ -11,7 +11,8 @@ import { WiggleEffect, bounceEffect } from "../effects/WiggleEffect";
 type Props = {};
 
 /**
- * Sample02
+ * Sample02:
+ * 画像表示とアニメーション
  * @returns
  */
 export const Sample02Composition = () => {

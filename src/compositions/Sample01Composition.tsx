@@ -7,7 +7,8 @@ import { SimpleBackground } from "../components/SimpleBackground";
 type Props = {};
 
 /**
- * Sample01
+ * Sample01:
+ * Sequence遷移とトランジション
  * @returns
  */
 export const Sample01Composition = () => {
