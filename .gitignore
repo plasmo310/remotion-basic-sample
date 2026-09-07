@@ -1,0 +1,11 @@
+node_modules
+dist
+.DS_Store
+.env
+
+# default remotion skills
+.agents/skills/remotion*
+.claude/skills/remotion*
+
+# Ignore the output video from Git but not videos you import into src/.
+out
